@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AX Consulting Mock-up Gallery | 삼성SDS 컨설팅팀</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --bg:#080d1c;
+    --bg-soft:#0c1428;
+    --surface:#121a32;
+    --surface-alt:#182142;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#eef1f8;
+    --text-dim:#aab2c8;
+    --text-mute:#6f7893;
+    --accent:#2be7cd;
+    --accent-soft:rgba(43,231,205,0.12);
+    --accent-strong:#17c9b1;
+    --warn:#ffb74d;
+    --warn-soft:rgba(255,183,77,0.12);
+    --violet:#8b8ff5;
+    --font-display:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+    --font-mono:'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
+  }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-display);
+    line-height:1.55;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 12% -10%, rgba(43,231,205,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(139,143,245,0.08), transparent 60%);
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  ::selection{background:var(--accent);color:#04120f;}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+  @media (max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- Header ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 0;
+    transition:background .35s ease, padding .35s ease, border-color .35s ease, backdrop-filter .35s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(8,13,28,0.82);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    padding:14px 0;
+    border-bottom-color:var(--border);
+  }
+  .nav-row{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:0.01em;}
+  .brand .mark{
+    width:30px;height:30px;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    position:relative;flex-shrink:0;
+  }
+  .brand .mark::after{
+    content:'';position:absolute;inset:7px;
+    background:var(--bg);
+    clip-path:polygon(0 100%, 50% 0, 100% 100%);
+  }
+  .brand small{display:block;font-weight:500;font-size:11px;color:var(--text-mute);letter-spacing:0.02em;margin-top:1px;}
+  nav ul{list-style:none;display:flex;gap:34px;}
+  nav a{
+    font-size:14px;color:var(--text-dim);font-weight:500;
+    position:relative;padding:4px 0;transition:color .2s ease;
+  }
+  nav a::after{
+    content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;
+    background:var(--accent);transition:width .25s ease;
+  }
+  nav a:hover{color:var(--text);}
+  nav a:hover::after{width:100%;}
+  .nav-cta{
+    font-size:13px;font-weight:600;color:var(--bg);
+    background:var(--accent);
+    padding:9px 18px;border-radius:8px;
+    transition:transform .2s ease, box-shadow .2s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 20px -6px rgba(43,231,205,0.55);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:860px){
+    nav{position:fixed;inset:0;top:64px;background:var(--bg-soft);
+      transform:translateY(-8px);opacity:0;pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:28px 24px;border-top:1px solid var(--border);}
+    nav.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav ul{flex-direction:column;gap:6px;}
+    nav ul li a{display:block;padding:14px 4px;font-size:16px;border-bottom:1px solid var(--border);}
+    .nav-cta{display:inline-block;margin-top:18px;}
+    .nav-toggle{
+      display:flex;flex-direction:column;gap:5px;width:24px;cursor:pointer;background:none;border:none;
+    }
+    .nav-toggle span{height:2px;background:var(--text);border-radius:2px;transition:transform .25s ease, opacity .25s ease;}
+    .nav-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-toggle.active span:nth-child(2){opacity:0;}
+    .nav-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:190px 0 110px;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;
+    color:var(--accent);background:var(--accent-soft);
+    border:1px solid rgba(43,231,205,0.28);
+    padding:6px 12px;border-radius:100px;
+    opacity:0;animation:rise .7s ease forwards;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  h1{
+    font-size:clamp(34px,5.4vw,64px);
+    font-weight:800;letter-spacing:-0.02em;line-height:1.14;
+    margin:22px 0 22px;max-width:820px;
+    opacity:0;animation:rise .7s ease .1s forwards;
+  }
+  h1 span{color:var(--accent);}
+  .hero p.lead{
+    font-size:clamp(15px,1.6vw,18px);color:var(--text-dim);
+    max-width:600px;margin-bottom:40px;
+    opacity:0;animation:rise .7s ease .2s forwards;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise .7s ease .3s forwards;}
+  .btn-primary{
+    background:var(--accent);color:#04120f;font-weight:700;font-size:14px;
+    padding:14px 26px;border-radius:10px;
+    transition:transform .2s ease, box-shadow .2s ease;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(43,231,205,0.5);}
+  .btn-ghost{
+    border:1px solid var(--border-strong);color:var(--text);font-weight:600;font-size:14px;
+    padding:14px 26px;border-radius:10px;transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-ghost:hover{border-color:var(--accent);background:rgba(43,231,205,0.06);}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- transformation pipeline (signature) ---------- */
+  .pipeline{
+    margin-top:90px;
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;
+    align-items:center;gap:0 6px;
+    opacity:0;animation:rise .8s ease .4s forwards;
+  }
+  .pipe-node{
+    border:1px solid var(--border);background:var(--surface);
+    border-radius:14px;padding:22px 20px;
+    position:relative;overflow:hidden;
+  }
+  .pipe-node::before{
+    content:attr(data-idx);
+    position:absolute;top:12px;right:14px;
+    font-family:var(--font-mono);font-size:11px;color:var(--text-mute);
+  }
+  .pipe-node h3{font-size:14px;font-weight:700;margin-bottom:6px;}
+  .pipe-node p{font-size:12.5px;color:var(--text-mute);line-height:1.5;}
+  .pipe-node.active{border-color:rgba(43,231,205,0.4);box-shadow:0 0 0 1px rgba(43,231,205,0.15) inset;}
+  .pipe-node.active h3{color:var(--accent);}
+  .pipe-line{height:2px;width:100%;position:relative;overflow:visible;}
+  .pipe-line svg{width:100%;height:20px;display:block;overflow:visible;}
+  .pipe-line path{
+    stroke:var(--border-strong);stroke-width:2;fill:none;
+    stroke-dasharray:6 6;
+  }
+  .pipe-line path.flow{
+    stroke:var(--accent);stroke-dasharray:4 10;stroke-linecap:round;
+    animation:flow 1.4s linear infinite;
+  }
+  @keyframes flow{to{stroke-dashoffset:-28;}}
+  @media (max-width:760px){
+    .pipeline{grid-template-columns:1fr;gap:14px;}
+    .pipe-line{transform:rotate(90deg);width:24px;margin:0 auto;}
+  }
+
+  /* ---------- Section shared ---------- */
+  section{padding:100px 0;}
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .section-head .tag{
+    font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.08em;
+    display:block;margin-bottom:14px;
+  }
+  .section-head h2{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-0.01em;margin-bottom:14px;}
+  .section-head p{color:var(--text-dim);font-size:15px;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- Stats strip ---------- */
+  .stats{
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:44px 0;background:var(--bg-soft);
+  }
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .stat b{
+    font-family:var(--font-mono);font-size:clamp(26px,3vw,36px);font-weight:700;
+    background:linear-gradient(90deg,var(--accent),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    display:block;
+  }
+  .stat span{font-size:13px;color:var(--text-mute);margin-top:6px;display:block;}
+  @media (max-width:700px){.stats .wrap{grid-template-columns:repeat(2,1fr);}}
+
+  /* ---------- Filters ---------- */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;}
+  .filter-btn{
+    font-size:13px;font-weight:600;color:var(--text-dim);
+    border:1px solid var(--border);background:var(--surface);
+    padding:9px 16px;border-radius:100px;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .filter-btn:hover{border-color:var(--border-strong);color:var(--text);}
+  .filter-btn.active{
+    background:var(--accent);color:#04120f;border-color:var(--accent);
+  }
+
+  /* ---------- Grid & Cards ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:26px;
+  }
+  @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:660px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;overflow:hidden;
+    cursor:pointer;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s ease, box-shadow .35s ease;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(43,231,205,0.35);
+    box-shadow:0 24px 48px -24px rgba(0,0,0,0.6);
+  }
+  .thumb{
+    height:168px;position:relative;overflow:hidden;
+    background:
+      linear-gradient(160deg,var(--surface-alt),var(--surface));
+    border-bottom:1px solid var(--border);
+    padding:16px;display:flex;flex-direction:column;gap:8px;
+  }
+  .thumb::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, transparent 60%, rgba(8,13,28,0.55));
+    opacity:0;transition:opacity .3s ease;
+  }
+  .card:hover .thumb::after{opacity:1;}
+  .thumb .bar{height:9px;border-radius:4px;background:rgba(255,255,255,0.08);}
+  .thumb .row{display:flex;gap:8px;flex:1;}
+  .thumb .block{border-radius:6px;background:rgba(255,255,255,0.06);}
+  .thumb .accent-block{background:rgba(43,231,205,0.22);border:1px solid rgba(43,231,205,0.3);}
+  .thumb .dot-row{display:flex;gap:6px;}
+  .thumb .pip{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.14);}
+  .thumb .scan{
+    position:absolute;left:0;right:0;height:40%;
+    background:linear-gradient(180deg, transparent, rgba(43,231,205,0.14), transparent);
+    transform:translateY(-140%);
+    transition:transform .9s ease;
+  }
+  .card:hover .scan{transform:translateY(220%);}
+
+  .card-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card-id{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.04em;}
+  .badge{
+    font-size:11px;font-weight:700;padding:4px 9px;border-radius:100px;white-space:nowrap;
+  }
+  .badge.done{background:var(--accent-soft);color:var(--accent);}
+  .badge.progress{background:var(--warn-soft);color:var(--warn);}
+  .badge.review{background:rgba(139,143,245,0.14);color:var(--violet);}
+  .card h3{font-size:16.5px;font-weight:700;letter-spacing:-0.005em;}
+  .card .desc{font-size:13px;color:var(--text-mute);line-height:1.55;flex:1;}
+  .card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+  .domain{font-size:11.5px;color:var(--text-dim);font-weight:600;}
+  .view-link{font-size:12.5px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:4px;}
+  .view-link svg{width:13px;height:13px;transition:transform .2s ease;}
+  .card:hover .view-link svg{transform:translateX(3px);}
+
+  /* ---------- Process ---------- */
+  .process-list{display:flex;flex-direction:column;border-top:1px solid var(--border);}
+  .process-item{
+    display:grid;grid-template-columns:70px 1fr;gap:26px;
+    padding:28px 0;border-bottom:1px solid var(--border);
+  }
+  .process-item .num{font-family:var(--font-mono);font-size:14px;color:var(--accent);padding-top:2px;}
+  .process-item h4{font-size:17px;font-weight:700;margin-bottom:6px;}
+  .process-item p{font-size:13.5px;color:var(--text-mute);max-width:560px;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--border);padding:56px 0 40px;background:var(--bg-soft);}
+  .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:36px;}
+  .footer-brand p{font-size:13px;color:var(--text-mute);margin-top:10px;max-width:340px;}
+  .footer-cols{display:flex;gap:64px;flex-wrap:wrap;}
+  .footer-col h5{font-size:12px;color:var(--text-mute);letter-spacing:0.05em;margin-bottom:14px;}
+  .footer-col a{display:block;font-size:13.5px;color:var(--text-dim);margin-bottom:10px;transition:color .2s ease;}
+  .footer-col a:hover{color:var(--accent);}
+  .footer-bottom{
+    border-top:1px solid var(--border);padding-top:24px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:12px;color:var(--text-mute);
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(4,7,16,0.72);
+    backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:200;
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal{
+    background:var(--surface);border:1px solid var(--border-strong);
+    border-radius:20px;max-width:680px;width:100%;max-height:86vh;overflow-y:auto;
+    transform:translateY(16px) scale(0.98);opacity:0;transition:transform .35s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
+  }
+  .modal-overlay.open .modal{transform:translateY(0) scale(1);opacity:1;}
+  .modal-thumb{
+    height:220px;position:relative;padding:22px;
+    background:linear-gradient(160deg,var(--surface-alt),var(--surface));
+    border-bottom:1px solid var(--border);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .modal-close{
+    position:absolute;top:16px;right:16px;
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(8,13,28,0.6);border:1px solid var(--border-strong);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--text);font-size:16px;z-index:2;
+    transition:background .2s ease;
+  }
+  .modal-close:hover{background:rgba(43,231,205,0.18);}
+  .modal-body{padding:28px 30px 32px;}
+  .modal-body .card-id{margin-bottom:10px;}
+  .modal-body h3{font-size:22px;font-weight:800;margin-bottom:14px;letter-spacing:-0.01em;}
+  .modal-body .desc{font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:22px;}
+  .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+  .meta-item{background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+  .meta-item span{display:block;font-size:11px;color:var(--text-mute);margin-bottom:4px;}
+  .meta-item b{font-size:13.5px;font-weight:700;}
+  .modal-actions{display:flex;gap:12px;}
+  @media (max-width:520px){.meta-grid{grid-template-columns:1fr 1fr;}}
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg-soft);}
+  ::-webkit-scrollbar-thumb{background:var(--surface-alt);border-radius:10px;}
+  a:focus-visible, button:focus-visible, .card:focus-visible{
+    outline:2px solid var(--accent);outline-offset:3px;border-radius:6px;
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav-row">
+    <div class="brand">
+      <span class="mark"></span>
+      <div>
+        AX Mock-up Gallery
+        <small>삼성SDS 컨설팅팀</small>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+    <nav id="navMenu">
+      <ul>
+        <li><a href="#pipeline" class="nav-link">프로세스</a></li>
+        <li><a href="#gallery" class="nav-link">과제 갤러리</a></li>
+        <li><a href="#approach" class="nav-link">진행 방식</a></li>
+        <li><a href="#footer" class="nav-link">문의</a></li>
+      </ul>
+      <a href="#gallery" class="nav-cta">Mock-up 둘러보기</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span>AX TRANSFORMATION PROGRAM · 2026</span>
+      <h1>AX Consulting으로 구체화한<br>과제, <span>Mock-up</span>으로 확인하세요</h1>
+      <p class="lead">삼성SDS 컨설팅팀이 AI Transformation(AX) 방법론을 통해 발굴하고 정의한 실행 과제들을 한눈에 확인할 수 있는 공간입니다. 각 과제의 화면 설계와 핵심 흐름을 Mock-up으로 미리 살펴보세요.</p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn-primary">과제 Mock-up 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#pipeline" class="btn-ghost">진행 프로세스 알아보기</a>
+      </div>
+
+      <div class="pipeline" id="pipeline">
+        <div class="pipe-node" data-idx="01">
+          <h3>Business Pain Point</h3>
+          <p>현업 인터뷰와 프로세스 진단을 통해 발굴한 비즈니스 문제</p>
+        </div>
+        <div class="pipe-line">
+          <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+            <path d="M0 10 L100 10"/>
+            <path class="flow" d="M0 10 L100 10"/>
+          </svg>
+        </div>
+        <div class="pipe-node active" data-idx="02">
+          <h3>AX Consulting</h3>
+          <p>AI 적용 가능성 진단 및 To-Be 프로세스 설계</p>
+        </div>
+        <div class="pipe-line">
+          <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+            <path d="M0 10 L100 10"/>
+            <path class="flow" d="M0 10 L100 10"/>
+          </svg>
+        </div>
+        <div class="pipe-node" data-idx="03">
+          <h3>Mock-up 산출물</h3>
+          <p>실행 가능한 화면 설계로 구체화된 과제 결과물</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="wrap">
+      <div class="stat"><b id="statTotal">0</b><span>정의된 실행 과제</span></div>
+      <div class="stat"><b id="statDone">0</b><span>Mock-up 완료</span></div>
+      <div class="stat"><b>6</b><span>대상 업무 영역</span></div>
+      <div class="stat"><b>1</b><span>담당 조직 · 컨설팅팀</span></div>
+    </div>
+  </div>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="tag">TASK GALLERY</span>
+        <h2>AX Consulting 과제 Mock-up</h2>
+        <p>영역별로 정의된 과제를 필터링하여 확인하고, 카드를 클릭하면 상세 Mock-up 정보를 볼 수 있습니다.</p>
+      </div>
+
+      <div class="filters reveal" id="filters"></div>
+      <div class="grid" id="cardGrid"></div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="tag">HOW WE WORK</span>
+        <h2>과제 구체화 진행 방식</h2>
+        <p>업무 진단부터 Mock-up 산출까지, 컨설팅팀이 함께합니다.</p>
+      </div>
+      <div class="process-list reveal">
+        <div class="process-item">
+          <div class="num">01</div>
+          <div><h4>현업 진단 및 As-Is 분석</h4><p>현업 부서 인터뷰와 데이터 기반 진단을 통해 반복적 업무 부담과 의사결정 지연 구간을 식별합니다.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="num">02</div>
+          <div><h4>AI 적용 가능성 평가</h4><p>식별된 문제에 대해 AI/LLM 적용 시 얻을 수 있는 효과와 구현 난이도를 함께 검토합니다.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="num">03</div>
+          <div><h4>To-Be 프로세스 설계</h4><p>변화될 업무 흐름과 필요한 화면·기능을 정의하여 실행 과제 형태로 구체화합니다.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="num">04</div>
+          <div><h4>Mock-up 제작 및 검증</h4><p>이해관계자가 직관적으로 확인할 수 있도록 화면 Mock-up을 제작하고 피드백을 반영합니다.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-brand">
+        <div class="brand"><span class="mark"></span>AX Mock-up Gallery</div>
+        <p>삼성SDS 컨설팅팀이 AX(AI Transformation) Consulting을 통해 구체화한 실행 과제와 Mock-up을 공유하는 공간입니다.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>PAGES</h5>
+          <a href="#pipeline">진행 프로세스</a>
+          <a href="#gallery">과제 갤러리</a>
+          <a href="#approach">진행 방식</a>
+        </div>
+        <div class="footer-col">
+          <h5>ORGANIZATION</h5>
+          <a href="#" onclick="return false;">삼성SDS 컨설팅팀</a>
+          <a href="#" onclick="return false;">AX Transformation Program</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Samsung SDS Consulting Team. Internal use only.</span>
+      <span>AX Consulting Mock-up Gallery</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+  // ---------------- Data ----------------
+  const TASKS = [
+    {
+      id:'AX-01', title:'AI 기반 생산라인 이상 탐지', domain:'제조·품질', status:'done',
+      desc:'생산라인 센서 데이터를 실시간 분석하여 품질 이상 징후를 조기에 탐지하고, 담당자에게 우선순위별 알림을 제공하는 대시보드 Mock-up입니다.',
+      pattern:'chart', effect:'불량 조기 탐지율 향상', owner:'제조혁신 Lab', stage:'Mock-up 완료'
+    },
+    {
+      id:'AX-02', title:'지능형 물류 배차 최적화', domain:'SCM·물류', status:'done',
+      desc:'배송 물량, 차량 현황, 교통 데이터를 종합해 최적 배차안을 추천하는 화면으로, 담당자가 추천안을 확인·조정할 수 있도록 설계했습니다.',
+      pattern:'kanban', effect:'배차 계획 소요시간 단축', owner:'SCM 컨설팅', stage:'Mock-up 완료'
+    },
+    {
+      id:'AX-03', title:'고객 상담 AI 어시스턴트', domain:'고객경험', status:'review',
+      desc:'상담원 옆에서 실시간으로 응대 스크립트와 관련 지식을 추천하는 코파일럿 형태의 UI로, 신입 상담원 온보딩 시나리오를 중심으로 설계했습니다.',
+      pattern:'chat', effect:'응대 정확도 및 일관성 개선', owner:'CX 컨설팅', stage:'검토 중'
+    },
+    {
+      id:'AX-04', title:'재무보고서 자동 생성', domain:'재무·회계', status:'progress',
+      desc:'월별 마감 데이터를 기반으로 보고서 초안을 자동 생성하고, 담당자가 검토·수정할 수 있는 편집 화면을 포함한 Mock-up입니다.',
+      pattern:'table', effect:'보고서 작성 리드타임 단축', owner:'재무혁신 TF', stage:'설계 중'
+    },
+    {
+      id:'AX-05', title:'영업기회 예측 대시보드', domain:'영업·마케팅', status:'done',
+      desc:'과거 영업 데이터를 학습해 상담 중인 리드의 성사 가능성을 점수화하고, 우선 접촉 대상을 추천하는 대시보드입니다.',
+      pattern:'chart', effect:'영업 리소스 우선순위화', owner:'세일즈 컨설팅', stage:'Mock-up 완료'
+    },
+    {
+      id:'AX-06', title:'HR 채용 스크리닝 어시스턴트', domain:'인사', status:'progress',
+      desc:'지원서를 직무 요건과 자동 매칭하여 서류 검토 우선순위를 제안하고, 검토 근거를 함께 제시하는 화면으로 구성했습니다.',
+      pattern:'list', effect:'서류 검토 시간 절감', owner:'HR 혁신팀', stage:'설계 중'
+    },
+    {
+      id:'AX-07', title:'계약서 리스크 분석 AI', domain:'법무·컴플라이언스', status:'review',
+      desc:'계약서 조항을 표준 조항과 비교 분석해 리스크 구간을 하이라이트하고, 검토 의견을 정리해주는 워크스페이스 Mock-up입니다.',
+      pattern:'table', effect:'계약 검토 리스크 가시성 확보', owner:'법무지원 컨설팅', stage:'검토 중'
+    },
+    {
+      id:'AX-08', title:'설비 예지보전 모니터링', domain:'제조·설비', status:'done',
+      desc:'설비 가동 데이터를 기반으로 고장 가능 시점을 예측하고, 정비 일정 수립을 지원하는 모니터링 화면으로 설계했습니다.',
+      pattern:'chart', effect:'비계획 정지시간 감소', owner:'제조혁신 Lab', stage:'Mock-up 완료'
+    },
+    {
+      id:'AX-09', title:'사내 지식 검색 코파일럿', domain:'고객경험', status:'progress',
+      desc:'사내 문서와 매뉴얼을 자연어로 질의해 답변과 출처를 함께 제공하는 검색 어시스턴트 화면 Mock-up입니다.',
+      pattern:'chat', effect:'정보 탐색 시간 절감', owner:'CX 컨설팅', stage:'설계 중'
+    }
+  ];
+
+  const DOMAINS = ['전체', ...Array.from(new Set(TASKS.map(t=>t.domain)))];
+  const STATUS_LABEL = {done:'Mock-up 완료', progress:'설계 중', review:'검토 중'};
+
+  // ---------------- Thumbnail patterns (CSS-drawn wireframes) ----------------
+  function thumbHTML(pattern, status){
+    const accentIdx = status==='done' ? 1 : 0;
+    const patterns = {
+      chart:`
+        <div class="bar" style="width:38%"></div>
+        <div class="row">
+          <div class="block" style="flex:2;"></div>
+          <div class="block accent-block" style="flex:3;"></div>
+          <div class="block" style="flex:1.4;"></div>
+        </div>
+        <div class="dot-row"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>`,
+      kanban:`
+        <div class="bar" style="width:30%"></div>
+        <div class="row">
+          <div class="block" style="flex:1;"></div>
+          <div class="block accent-block" style="flex:1;"></div>
+          <div class="block" style="flex:1;"></div>
+        </div>`,
+      chat:`
+        <div class="bar" style="width:24%"></div>
+        <div class="row" style="flex-direction:column;gap:6px;">
+          <div class="block" style="height:14px;width:70%;align-self:flex-start;"></div>
+          <div class="block accent-block" style="height:14px;width:55%;align-self:flex-end;"></div>
+          <div class="block" style="height:14px;width:62%;align-self:flex-start;"></div>
+        </div>`,
+      table:`
+        <div class="bar" style="width:34%"></div>
+        <div class="row" style="flex-direction:column;gap:6px;">
+          <div class="block" style="height:10px;"></div>
+          <div class="block" style="height:10px;"></div>
+          <div class="block accent-block" style="height:10px;"></div>
+        </div>`,
+      list:`
+        <div class="bar" style="width:28%"></div>
+        <div class="row" style="flex-direction:column;gap:7px;">
+          <div class="block" style="height:12px;width:90%;"></div>
+          <div class="block accent-block" style="height:12px;width:78%;"></div>
+          <div class="block" style="height:12px;width:85%;"></div>
+        </div>`
+    };
+    return `<div class="scan"></div>${patterns[pattern] || patterns.chart}`;
+  }
+
+  // ---------------- Render ----------------
+  const grid = document.getElementById('cardGrid');
+  const filtersEl = document.getElementById('filters');
+
+  function renderFilters(active){
+    filtersEl.innerHTML = DOMAINS.map(d =>
+      `<button class="filter-btn ${d===active?'active':''}" data-domain="${d}">${d}</button>`
+    ).join('');
+    filtersEl.querySelectorAll('.filter-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        renderFilters(btn.dataset.domain);
+        renderCards(btn.dataset.domain);
+      });
+    });
+  }
+
+  function renderCards(domain){
+    const list = domain==='전체' ? TASKS : TASKS.filter(t=>t.domain===domain);
+    grid.innerHTML = list.map(t => `
+      <article class="card reveal in" tabindex="0" data-id="${t.id}">
+        <div class="thumb">${thumbHTML(t.pattern, t.status)}</div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-id">${t.id}</span>
+            <span class="badge ${t.status}">${STATUS_LABEL[t.status]}</span>
+          </div>
+          <h3>${t.title}</h3>
+          <p class="desc">${t.desc}</p>
+          <div class="card-foot">
+            <span class="domain">${t.domain}</span>
+            <span class="view-link">Mock-up 보기
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    grid.querySelectorAll('.card').forEach(card=>{
+      const openModal = ()=> showModal(card.dataset.id);
+      card.addEventListener('click', openModal);
+      card.addEventListener('keydown', e=>{ if(e.key==='Enter') openModal(); });
+    });
+  }
+
+  // ---------------- Modal ----------------
+  const overlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+
+  function showModal(id){
+    const t = TASKS.find(x=>x.id===id);
+    if(!t) return;
+    modalContent.innerHTML = `
+      <div class="modal-thumb">
+        <button class="modal-close" id="modalClose" aria-label="닫기">✕</button>
+        ${thumbHTML(t.pattern, t.status)}
+      </div>
+      <div class="modal-body">
+        <span class="card-id">${t.id} · ${t.domain}</span>
+        <h3>${t.title}</h3>
+        <p class="desc">${t.desc}</p>
+        <div class="meta-grid">
+          <div class="meta-item"><span>진행 상태</span><b>${t.stage}</b></div>
+          <div class="meta-item"><span>기대 효과</span><b>${t.effect}</b></div>
+          <div class="meta-item"><span>담당</span><b>${t.owner}</b></div>
+        </div>
+        <div class="modal-actions">
+          <a href="#gallery" class="btn-primary" id="modalCloseBtn">갤러리로 돌아가기</a>
+        </div>
+      </div>
+    `;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  // ---------------- Stats count-up ----------------
+  function countUp(el, target, duration){
+    const start = performance.now();
+    function step(now){
+      const p = Math.min((now-start)/duration, 1);
+      el.textContent = Math.round(p * target);
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ---------------- Header scroll state ----------------
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', ()=>{
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  }, {passive:true});
+
+  // ---------------- Mobile nav ----------------
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+  navToggle.addEventListener('click', ()=>{
+    navToggle.classList.toggle('active');
+    navMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-link, .nav-cta').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      navToggle.classList.remove('active');
+      navMenu.classList.remove('open');
+    });
+  });
+
+  // ---------------- Reveal on scroll ----------------
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+  // stats trigger
+  const statsObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        countUp(document.getElementById('statTotal'), TASKS.length, 900);
+        countUp(document.getElementById('statDone'), TASKS.filter(t=>t.status==='done').length, 900);
+        statsObserver.disconnect();
+      }
+    });
+  }, {threshold:0.4});
+  statsObserver.observe(document.querySelector('.stats'));
+
+  // ---------------- Init ----------------
+  renderFilters('전체');
+  renderCards('전체');
+</script>
+</body>
+</html>
